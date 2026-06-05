@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-primary fw-bold">DANH MỤC THUỐC</h5>
+                    <a th:href="@{/admin/medicines/add}" class="btn btn-primary btn-sm shadow-sm">
+                        <i class="bi bi-plus-lg"></i> Thêm thuốc mới
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên thuốc</th>
+                                    <th>Giá bán</th>
+                                    <th>Tồn kho</th>
+                                    <th>Nhà sản xuất</th>
+                                    <th class="text-end px-4">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="m : ${medicines}">
+                                    <td th:text="${m.id}" class="text-muted small"></td>
+                                    <td>
+                                        <div class="fw-bold text-dark" th:text="${m.name}"></div>
+                                        <small class="text-secondary" th:text="${m.dosageForm ?: ''}"></small>
+                                    </td>
+                                    <td>
+                                        <span th:if="${m.price != null}"
+                                              th:text="${#numbers.formatDecimal(m.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                              class="text-primary fw-bold"></span>
+                                        <span th:unless="${m.price != null}" class="text-muted small">Chưa có giá</span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${m.stockQuantity}" th:class="${m.stockQuantity < 10 ? 'text-danger fw-bold' : ''}"></span>
+                                        <small class="text-muted" th:text="${m.unit ?: 'đv'}"></small>
+                                    </td>
+                                    <td th:text="${m.manufacturer ?: 'N/A'}" class="small"></td>
+                                    <td class="text-end px-4">
+                                        <div class="btn-group">
+                                            <a th:href="@{/admin/medicines/edit/{id}(id=${m.id})}" class="btn btn-sm btn-outline-primary border-0" title="Chỉnh sửa"><i class="bi bi-pencil-square"></i></a>
+                                            <a th:href="@{/admin/medicines/delete/{id}(id=${m.id})}" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('Bạn có chắc muốn xóa?')" title="Xóa"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(medicines)}">
+                                    <td colspan="6" class="text-center py-5 text-muted">Chưa có dữ liệu thuốc.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

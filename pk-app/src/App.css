@@ -1,0 +1,121 @@
+:root {
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --medical-blue: #00a8cc;
+  --medical-dark: #005073;
+  --bg-soft: #f8fafc;
+  --shadow-main: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 16px;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-soft);
+  color: #1e293b;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Navbar Customization */
+.main-navbar {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.brand-text {
+  letter-spacing: -0.5px;
+  background: linear-gradient(45deg, var(--medical-blue), var(--medical-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Card Modern Style */
+.card {
+  border: 1px solid #f1f5f9;
+  border-radius: var(--radius);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-main);
+}
+
+/* Button Modern Style */
+.btn {
+  padding: 10px 24px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-dark) 100%);
+  border: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 168, 204, 0.4);
+}
+
+/* Table Modern Style */
+.table {
+  background: white;
+  border-radius: var(--radius);
+}
+
+.table thead th {
+  background-color: #f8fafc;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-top: none;
+  padding: 16px;
+}
+
+.table tbody td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Badge Custom */
+.badge {
+  padding: 6px 12px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Medical specific classes */
+.text-medical { color: var(--medical-blue); }
+.bg-medical { background-color: var(--medical-blue); }

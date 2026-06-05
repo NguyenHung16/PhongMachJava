@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"><i class="bi bi-hospital text-primary"></i> Quản lý chuyên khoa</h1>
+            <a th:href="@{/admin/specialties/add}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-plus-circle"></i> Tạo chuyên khoa
+            </a>
+        </div>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên chuyên khoa</th>
+                                <th>Mô tả</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="s : ${specialties}">
+                                <td th:text="${s.id}"></td>
+                                <td th:text="${s.name}" class="fw-bold"></td>
+                                <td th:text="${s.description}" class="small"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="@{/admin/specialties/edit/{id}(id=${s.id})}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                                        <a th:href="@{/admin/specialties/delete/{id}(id=${s.id})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xóa chuyên khoa này?')"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

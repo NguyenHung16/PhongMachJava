@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800 fw-bold">Báo cáo Thống kê Y tế</h1>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">Tùy chọn lọc báo cáo</h6>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/stats}" method="get" class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Năm báo cáo</label>
+                            <input type="number" name="year" class="form-control" th:value="${currentYear}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Kiểu thống kê</label>
+                            <select name="time" class="form-select">
+                                <option value="MONTH" th:selected="${currentTime == 'MONTH'}">Theo từng Tháng</option>
+                                <option value="QUARTER" th:selected="${currentTime == 'QUARTER'}">Theo từng Quý</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-filter"></i> Lọc dữ liệu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Doanh thu Chart -->
+                <div class="col-lg-12">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header py-3 bg-white">
+                            <h6 class="m-0 font-weight-bold text-primary">Biểu đồ Doanh thu (VND)</h6>
+                        </div>
+                        <div class="card-body" style="height: 400px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gender Chart -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header py-3 bg-white">
+                            <h6 class="m-0 font-weight-bold text-success">Phân bổ Bệnh nhân theo Giới tính</h6>
+                        </div>
+                        <div class="card-body" style="height: 300px;">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Age Chart -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header py-3 bg-white">
+                            <h6 class="m-0 font-weight-bold text-warning">Phân bổ Bệnh nhân theo Độ tuổi</h6>
+                        </div>
+                        <div class="card-body" style="height: 300px;">
+                            <canvas id="ageGroupChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function () {
+            const revenueByTime = /*[[${revenueByTime}]]*/ [];
+            const patientsByGender = /*[[${patientsByGender}]]*/ [];
+            const patientsByAgeGroup = /*[[${patientsByAgeGroup}]]*/ [];
+
+            // Doanh Thu Chart
+            new Chart(document.getElementById('revenueChart'), {
+                type: 'bar',
+                data: {
+                    labels: revenueByTime.map(row => row[0]),
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: revenueByTime.map(row => row[1]),
+                        backgroundColor: '#4e73df',
+                        borderRadius: 5
+                    }]
+                },
+                options: { maintainAspectRatio: false }
+            });
+
+            // Gender Chart
+            new Chart(document.getElementById('genderChart'), {
+                type: 'pie',
+                data: {
+                    labels: patientsByGender.map(row => row[0]),
+                    datasets: [{
+                        data: patientsByGender.map(row => row[1]),
+                        backgroundColor: ['#1cc88a', '#4e73df']
+                    }]
+                },
+                options: { maintainAspectRatio: false }
+            });
+
+            // Age Chart
+            new Chart(document.getElementById('ageGroupChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: patientsByAgeGroup.map(row => row[0]),
+                    datasets: [{
+                        data: patientsByAgeGroup.map(row => row[1]),
+                        backgroundColor: ['#f6c23e', '#e74a3b', '#36b9cc', '#4e73df']
+                    }]
+                },
+                options: { maintainAspectRatio: false, cutout: '70%' }
+            });
+        };
+        /*]]>*/
+    </script>
+</body>
+</html>

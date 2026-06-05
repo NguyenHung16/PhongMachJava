@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${medicine.id == null ? 'Thêm Thuốc Mới' : 'Cập Nhật Thuốc'}"></title>
+    <th:block th:replace="base :: bt"></th:block>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="base :: menu"></div>
+
+    <main class="container form-container">
+        <h1 class="text-center text-info mt-2" th:text="${medicine.id == null ? 'THÊM THUỐC MỚI' : 'CẬP NHẬT THUỐC'}"></h1>
+        
+        <form method="post" th:object="${medicine}" th:action="@{/medicines}" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{imageUrl}" />
+
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Tên thuốc" required>
+                <label for="name">Tên thuốc</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="dosageForm" th:field="*{dosageForm}" placeholder="Dạng bào chế">
+                <label for="dosageForm">Dạng bào chế</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="manufacturer" th:field="*{manufacturer}" placeholder="Nhà sản xuất">
+                <label for="manufacturer">Nhà sản xuất</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="number" class="form-control" id="stockQuantity" th:field="*{stockQuantity}" placeholder="Số lượng tồn kho" required>
+                <label for="stockQuantity">Số lượng tồn kho</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="text" class="form-control" id="unit" th:field="*{unit}" placeholder="Đơn vị">
+                <label for="unit">Đơn vị</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="date" class="form-control" id="expiryDate" th:field="*{expiryDate}" placeholder="Hạn sử dụng">
+                <label for="expiryDate">Hạn sử dụng</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="number" class="form-control" id="price" th:field="*{price}" placeholder="Giá" required>
+                <label for="price">Giá</label>
+            </div>
+            
+            <div class="form-floating mb-3 mt-3">
+                <input type="file" class="form-control" id="imageFile" name="imageFile">
+                <label for="imageFile">Ảnh thuốc</label>
+            </div>
+            
+            <div class="mb-3 mt-3" th:if="${medicine.imageUrl != null}">
+                <label class="form-label">Ảnh hiện tại:</label>
+                <img th:src="${medicine.imageUrl}" width="200" class="img-thumbnail" />
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-success" th:if="${medicine.id == null}">Thêm thuốc</button>
+                <button type="submit" class="btn btn-success" th:unless="${medicine.id == null}">Cập nhật thuốc</button>
+            </div>
+        </form>
+    </main>
+
+    <div th:replace="base :: footer"></div>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

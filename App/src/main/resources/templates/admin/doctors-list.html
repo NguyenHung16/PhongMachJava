@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+        <div class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark mb-0">Quản lý đội ngũ bác sĩ</h4>
+                <a th:href="@{/admin/doctors/add}" class="btn btn-primary btn-sm shadow-sm">
+                    <i class="bi bi-person-plus me-1"></i> Thêm bác sĩ
+                </a>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Mã BS</th>
+                                    <th>Họ và tên</th>
+                                    <th>Chuyên khoa</th>
+                                    <th>Trình độ</th>
+                                    <th>Email</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="d : ${doctors}">
+                                    <td th:text="${d.doctorCode}" class="text-primary fw-bold"></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img th:src="${d.userId?.avatar ?: 'https://www.w3schools.com/howto/img_avatar.png'}" class="rounded-circle me-2" width="35" height="35" style="object-fit: cover;">
+                                            <span th:text="${d.userId?.fullName}" class="fw-semibold"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span th:text="${d.specialtyId?.name ?: 'N/A'}" class="badge bg-light text-primary border"></span>
+                                    </td>
+                                    <td th:text="${d.qualification}"></td>
+                                    <td th:text="${d.userId?.email}" class="small"></td>
+                                    <td class="text-end">
+                                        <div class="btn-group me-3">
+                                            <a th:href="@{/admin/doctors/edit/{id}(id=${d.id})}" class="btn btn-sm btn-white border"><i class="bi bi-pencil text-warning"></i></a>
+                                            <a th:href="@{/admin/doctors/delete/{id}(id=${d.id})}" class="btn btn-sm btn-white border" onclick="return confirm('Xóa bác sĩ này?')"><i class="bi bi-trash text-danger"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

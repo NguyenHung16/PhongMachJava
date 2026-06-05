@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <h4 class="mb-4 text-dark fw-bold">Quản lý lịch hẹn khám</h4>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Mã đặt</th>
+                                    <th>Bệnh nhân</th>
+                                    <th>Bác sĩ</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-center">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="a : ${appointments}">
+                                    <td class="text-primary fw-bold" th:text="${'#APP-' + a.id}"></td>
+                                    <td>
+                                        <!-- Dùng ?.userId.fullName cho cả hai để đồng nhất -->
+                                        <div class="fw-bold text-dark" th:text="${a.patientId?.userId?.fullName ?: 'N/A'}"></div>
+                                        <span class="text-muted small" th:text="${a.patientId?.userId?.phoneNumber}"></span>
+                                    </td>
+                                    <td>
+                                        <div class="text-dark" th:text="${'BS. ' + (a.doctorId?.userId?.fullName ?: 'N/A')}"></div>
+                                        <span class="badge bg-light text-primary border small" th:text="${a.doctorId?.specialtyId?.name ?: 'Chưa rõ'}"></span>
+                                    </td>
+                                    <td>
+                                        <div class="small" th:if="${a.appointmentDate != null}">
+                                            <i class="bi bi-calendar3 me-1"></i> <span th:text="${#dates.format(a.appointmentDate, 'dd/MM/yyyy')}"></span><br>
+                                            <i class="bi bi-clock me-1 text-muted"></i> <span th:text="${#dates.format(a.appointmentTime, 'HH:mm')}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span th:if="${a.status?.equalsIgnoreCase('PENDING')}" class="badge bg-warning text-dark">Chờ duyệt</span>
+                                        <span th:if="${a.status?.equalsIgnoreCase('CONFIRMED')}" class="badge bg-info text-white">Đã xác nhận</span>
+                                        <span th:if="${a.status?.equalsIgnoreCase('COMPLETED')}" class="badge bg-success">Hoàn thành</span>
+                                        <span th:if="${a.status?.equalsIgnoreCase('CANCELLED')}" class="badge bg-secondary">Đã hủy</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a th:if="${a.status?.equalsIgnoreCase('PENDING')}" th:href="@{/admin/appointments/{id}/status(id=${a.id}, status='CONFIRMED')}" class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-check2 text-success"></i></a>
+                                            <a th:if="${a.status?.equalsIgnoreCase('CONFIRMED')}" th:href="@{/admin/appointments/{id}/status(id=${a.id}, status='COMPLETED')}" class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-flag-fill text-primary"></i></a>
+                                            <a th:if="${!a.status?.equalsIgnoreCase('CANCELLED') && !a.status?.equalsIgnoreCase('COMPLETED')}" th:href="@{/admin/appointments/{id}/status(id=${a.id}, status='CANCELLED')}" class="btn btn-sm btn-white border shadow-sm"><i class="bi bi-x-circle text-danger"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/specialties}">Chuyên khoa</a></li>
+                    <li class="breadcrumb-item active" th:text="${specialty.id == null ? 'Thêm mới' : 'Cập nhật'}"></li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+                <div class="card-header py-3 bg-white">
+                    <h5 class="mb-0 text-primary fw-bold">
+                        <i class="bi bi-diagram-3 me-2"></i>
+                        <span th:text="${specialty.id == null ? 'TẠO CHUYÊN KHOA MỚI' : 'CẬP NHẬT CHUYÊN KHOA'}"></span>
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" th:object="${specialty}" th:action="@{/admin/specialties/save}">
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small">Tên chuyên khoa <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" th:field="*{name}" placeholder="Ví dụ: Khoa Nội, Khoa Nhi..." required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small">Mô tả chuyên khoa</label>
+                            <textarea class="form-control" th:field="*{description}" rows="6" placeholder="Mô tả chức năng, nhiệm vụ của chuyên khoa..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                                <i class="bi bi-check-circle me-1"></i> Xác nhận lưu
+                            </button>
+                            <a th:href="@{/admin/specialties}" class="btn btn-link text-muted">Hủy bỏ và quay lại</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

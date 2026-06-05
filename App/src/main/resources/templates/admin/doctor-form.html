@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <div class="card shadow-sm mx-auto" style="max-width: 900px;">
+                <div class="card-header py-3 bg-white">
+                    <h5 class="mb-0 text-primary fw-bold">
+                        <i class="bi bi-person-badge me-2"></i>
+                        <span th:text="${doctor.id == null ? 'HỒ SƠ BÁC SĨ MỚI' : 'CẬP NHẬT HỒ SƠ BÁC SĨ'}"></span>
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" th:action="@{/admin/doctors/save}" enctype="multipart/form-data">
+                        <input type="hidden" name="id" th:value="${doctor.id}" />
+
+                        <div class="row g-4">
+                            <!-- Ảnh đại diện -->
+                            <div class="col-md-4 text-center border-end">
+                                <label class="form-label fw-bold d-block small">ẢNH ĐẠI DIỆN</label>
+                                <img th:src="${doctor.id != null && doctor.userId?.avatar != null ? doctor.userId.avatar : 'https://www.w3schools.com/howto/img_avatar.png'}"
+                                     class="rounded-circle shadow-sm mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f8f9fc;">
+                                <input type="file" class="form-control form-control-sm" name="avatar" accept="image/*">
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-semibold small">HỌ VÀ TÊN BÁC SĨ</label>
+                                        <input type="text" class="form-control" name="fullName" th:value="${doctor.id != null ? doctor.userId?.fullName : ''}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small">TÊN ĐĂNG NHẬP</label>
+                                        <input type="text" class="form-control" name="username" th:value="${doctor.id != null ? doctor.userId?.username : ''}" th:readonly="${doctor.id != null}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small">CHUYÊN KHOA</label>
+                                        <select class="form-select" name="specialtyId" required>
+                                            <option value="">-- Chọn chuyên khoa --</option>
+                                            <option th:each="s : ${specialties}" th:value="${s.id}" th:text="${s.name}" th:selected="${doctor.specialtyId != null && doctor.specialtyId.id == s.id}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small">EMAIL</label>
+                                        <input type="email" class="form-control" name="email" th:value="${doctor.id != null ? doctor.userId?.email : ''}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small">SỐ ĐIỆN THOẠI</label>
+                                        <input type="text" class="form-control" name="phoneNumber" th:value="${doctor.id != null ? doctor.userId?.phoneNumber : ''}">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold small">TRÌNH ĐỘ CHUYÊN MÔN</label>
+                                        <input type="text" class="form-control" name="qualification" th:value="${doctor.qualification}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">TIỂU SỬ & KINH NGHIỆM</label>
+                                <textarea class="form-control" name="biography" rows="4" th:text="${doctor.biography}"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+                            <a th:href="@{/admin/doctors}" class="btn btn-light border px-4">Hủy bỏ</a>
+                            <button type="submit" class="btn btn-primary px-5 shadow-sm">Lưu hồ sơ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

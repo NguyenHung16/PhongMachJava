@@ -1,0 +1,60 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{base :: bt}"></th:block>
+    <style>
+        .hero-section { background: linear-gradient(rgba(78, 115, 223, 0.9), rgba(34, 74, 190, 0.9)), url('https://img.freepik.com/free-photo/hospital-hallway-modern-medical-center-generative-ai_188544-7844.jpg'); background-size: cover; background-position: center; padding: 100px 0; color: white; border-radius: 0 0 50px 50px; }
+        .medicine-card { transition: transform 0.3s; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .medicine-card:hover { transform: translateY(-5px); }
+        .medicine-img { height: 180px; object-fit: cover; border-radius: 12px; background-color: #f8f9fa; }
+        .section-title { font-weight: 800; color: #4e73df; position: relative; padding-bottom: 15px; margin-bottom: 40px; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 60px; height: 4px; background: #4e73df; border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <div th:replace="~{base :: menu}"></div>
+
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Chăm Sóc Sức Khỏe Tận Tâm</h1>
+            <p class="lead mb-5 opacity-75">Hệ thống phòng khám hiện đại với đội ngũ bác sĩ giàu kinh nghiệm.</p>
+        </div>
+    </header>
+
+    <main class="container my-5 py-5">
+        <section id="medicines">
+            <h2 class="section-title">Danh mục thuốc cung cấp</h2>
+
+            <div class="row g-4">
+                <!-- Sửa lỗi: Sử dụng th:block thay vì tr để lặp div -->
+                <th:block th:each="m : ${medicines}">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="card h-100 medicine-card">
+                            <div class="p-3 pb-0 text-center">
+                                <img th:src="${m.imageUrl != null ? m.imageUrl : 'https://placehold.co/400x300?text=No+Image'}" class="card-img-top medicine-img" th:alt="${m.name}">
+                            </div>
+                            <div class="card-body">
+                                <span class="badge bg-primary-soft text-primary small mb-2" th:text="${m.dosageForm ?: 'Thuốc'}"></span>
+                                <h6 class="card-title fw-bold text-dark mb-1" th:text="${m.name}"></h6>
+                                <p class="small text-muted mb-2" th:text="${m.manufacturer ?: 'Nhà sản xuất'}"></p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <!-- Kiểm tra null price -->
+                                    <span class="text-primary fw-bold" th:if="${m.price != null}"
+                                          th:text="${#numbers.formatDecimal(m.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                                    <span class="small text-muted" th:text="${m.unit}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <div th:if="${#lists.isEmpty(medicines)}" class="col-12 text-center py-5">
+                    <p class="text-muted">Đang cập nhật danh sách thuốc...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{base :: footer}"></div>
+</body>
+</html>

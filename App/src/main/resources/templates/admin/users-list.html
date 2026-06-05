@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <h4 class="mb-4 text-gray-800 fw-bold">Quản lý tài khoản người dùng</h4>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng hệ thống</h6>
+                    <a th:href="@{/admin/users/add}" class="btn btn-primary btn-sm shadow-sm">
+                        <i class="bi bi-person-plus me-1"></i> Thêm người dùng mới
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Avatar</th>
+                                    <th>Họ tên</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Vai trò</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="u : ${users}">
+                                    <td th:text="${u.id}" class="text-muted small"></td>
+                                    <td>
+                                        <img th:src="${u.avatar != null ? u.avatar : 'https://www.w3schools.com/howto/img_avatar.png'}"
+                                             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    </td>
+                                    <td th:text="${u.fullName}" class="fw-bold"></td>
+                                    <td th:text="${u.username}"></td>
+                                    <td th:text="${u.email}"></td>
+                                    <td>
+                                        <span th:if="${u.role == 'ADMIN'}" class="badge bg-danger">Quản trị</span>
+                                        <span th:if="${u.role == 'DOCTOR'}" class="badge bg-primary">Bác sĩ</span>
+                                        <span th:if="${u.role == 'PATIENT'}" class="badge bg-success">Bệnh nhân</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <a th:href="@{/admin/users/edit/{id}(id=${u.id})}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                                            <a th:href="@{/admin/users/delete/{id}(id=${u.id})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xác nhận xóa?')"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

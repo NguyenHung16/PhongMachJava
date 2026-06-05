@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head}"></head>
+<body>
+    <div th:replace="~{admin/layout :: sidebar}"></div>
+
+    <div class="wrapper">
+        <div th:replace="~{admin/layout :: topbar}"></div>
+
+        <div class="content-area">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800 fw-bold">Tổng quan quản trị</h1>
+                <a th:href="@{/stats}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                    <i class="bi bi-graph-up-arrow me-1"></i> Xem báo cáo chi tiết
+                </a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Doanh thu -->
+                <div class="col-xl-3 col-md-6">
+                    <a th:href="@{/stats}" class="text-decoration-none">
+                        <div class="card border-start border-primary border-4 h-100 py-2 shadow-sm card-hover">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 small">Doanh thu</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Thống kê</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-currency-dollar fs-2 text-primary opacity-25"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Lịch hẹn -->
+                <div class="col-xl-3 col-md-6">
+                    <a th:href="@{/admin/appointments}" class="text-decoration-none">
+                        <div class="card border-start border-success border-4 h-100 py-2 shadow-sm card-hover">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1 small">Quản lý lịch hẹn</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Xem ngay</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-calendar2-check fs-2 text-success opacity-25"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Bệnh nhân -->
+                <div class="col-xl-3 col-md-6">
+                    <a th:href="@{/admin/users}" class="text-decoration-none">
+                        <div class="card border-start border-info border-4 h-100 py-2 shadow-sm card-hover">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1 small">Bệnh nhân mới</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Danh sách</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-people fs-2 text-info opacity-25"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Thuốc sắp hết -->
+                <div class="col-xl-3 col-md-6">
+                    <a th:href="@{/admin/medicines}" class="text-decoration-none">
+                        <div class="card border-start border-warning border-4 h-100 py-2 shadow-sm card-hover">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1 small">Quản lý thuốc</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Kiểm tra kho</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-capsule-pill fs-2 text-warning opacity-25"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Biểu đồ -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header py-3 bg-white">
+                            <h6 class="m-0 font-weight-bold text-primary">Theo dõi hoạt động</h6>
+                        </div>
+                        <div class="card-body" style="height: 350px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header py-3 bg-white">
+                            <h6 class="m-0 font-weight-bold text-primary">Trạng thái kho thuốc</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush small">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Paracetamol
+                                    <span class="badge bg-danger rounded-pill">Chỉ còn 5</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Amoxicillin
+                                    <span class="badge bg-warning rounded-pill">Chỉ còn 12</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Vitamin C
+                                    <span class="badge bg-success rounded-pill">Đầy đủ</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-center">
+                                <a th:href="@{/admin/medicines}" class="small text-decoration-none">Xem toàn bộ danh mục <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s; cursor: pointer; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'line',
+            data: {
+                labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
+                datasets: [{
+                    label: 'Số lượng bệnh nhân khám',
+                    data: [12, 19, 15, 25, 22, 30, 18],
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { maintainAspectRatio: false }
+        });
+    </script>
+</body>
+</html>

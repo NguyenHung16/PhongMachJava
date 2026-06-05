@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 1997, 2023 Oracle and/or its affiliates. All rights reserved.
+
+    This program and the accompanying materials are made available under the
+    terms of the Eclipse Public License v. 2.0, which is available at
+    http://www.eclipse.org/legal/epl-2.0.
+
+    This Source Code may also be made available under the following Secondary
+    Licenses when the conditions for such availability set forth in the
+    Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+    version 2 with the GNU Classpath Exception, which is available at
+    https://www.gnu.org/software/classpath/license.html.
+
+    SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.eclipse.ee4j</groupId>
+        <artifactId>project</artifactId>
+        <version>1.0.9</version>
+    </parent>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakartaee-api-parent</artifactId>
+    <version>11.0.0-M1</version>
+    <packaging>pom</packaging>
+    <name>Jakarta EE API parent</name>
+    <description>Jakarta EE API parent</description>
+
+    <modules>
+        <module>jakartaee-bom</module>
+        <module>jakartaee-core-api</module>
+        <module>jakartaee-web-api</module>
+        <module>jakartaee-api</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jakartaee.version>11.0.0</jakartaee.version>
+        <extra.excludes />
+        <javadoc.options />
+        <parent.deploy.skip>true</parent.deploy.skip>
+
+        <apidocs.api.src>${project.build.directory}/api-sources</apidocs.api.src>
+        <apidocs.api.tmp>${project.build.directory}/api-sources-tmp</apidocs.api.tmp>
+        <apidocs.api.dist>${project.build.directory}/api-javadoc</apidocs.api.dist>
+        <apidocs.modulepath/>
+        <apidocs.required>*</apidocs.required>
+        <apidocs.optional/>
+
+        <apidocs.windowtitle>${project.name}</apidocs.windowtitle>
+        <apidocs.doctitle>${project.name}</apidocs.doctitle>
+        <apidocs.header><![CDATA[<br>${project.name} v${project.version}]]></apidocs.header>
+        <apidocs.bottom><![CDATA[
+<p align="left">Copyright &#169; 2018,2023 Eclipse Foundation.<br>Use is subject to
+<a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]></apidocs.bottom>
+
+
+        <!-- Core Profile -->
+        <jakarta.json-api.version>2.1.0</jakarta.json-api.version>
+        <jakarta.json.bind-api.version>3.0.0</jakarta.json.bind-api.version>
+        <jakarta.annotation-api.version>3.0.0-M1</jakarta.annotation-api.version>
+        <jakarta.inject.version>2.0.1</jakarta.inject.version>
+        <jakarta.interceptor-api.version>2.2.0-M1</jakarta.interceptor-api.version>
+        <jakarta.enterprise.cdi-api.version>4.1.0-M1</jakarta.enterprise.cdi-api.version>
+        <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+
+        <!-- Web Profile -->
+        <jakarta.servlet-api.version>6.1.0-M1</jakarta.servlet-api.version>
+        <jakarta.servlet.jsp-api.version>4.0.0-M1</jakarta.servlet.jsp-api.version>
+        <jakarta.servlet.jsp.jstl-api.version>3.0.0</jakarta.servlet.jsp.jstl-api.version>
+        <jakarta.faces-api.version>4.1.0-M1</jakarta.faces-api.version>
+        <jakarta.el-api.version>6.0.0-M1</jakarta.el-api.version>
+        <jakarta.websocket-api.version>2.2.0-M1</jakarta.websocket-api.version>
+        <jakarta.ejb-api.version>4.0.1</jakarta.ejb-api.version>
+        <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
+        <jakarta.persistence-api.version>3.2.0-M1</jakarta.persistence-api.version>
+        <jakarta.validation-api.version>3.1.0-M1</jakarta.validation-api.version>
+        <jakarta.authentication-api.version>3.1.0-M1</jakarta.authentication-api.version>
+        <jakarta.security.enterprise-api.version>4.0.0-M1</jakarta.security.enterprise-api.version>
+        <jakarta.enterprise.concurrent-api.version>3.1.0-M1</jakarta.enterprise.concurrent-api.version>
+        <jakarta.data.version>1.0.0-M1</jakarta.data.version>
+        <jakarta.enterprise.cdi-el-api.version>4.1.0-M1</jakarta.enterprise.cdi-el-api.version>
+
+        <!--  Platform -->
+        <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
+        <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
+        <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
+        <jakarta.resource-api.version>2.1.0</jakarta.resource-api.version>
+        <jakarta.authorization-api.version>3.0.0-M1</jakarta.authorization-api.version>
+        <jakarta.batch-api.version>2.1.1</jakarta.batch-api.version>
+
+        <!-- Optional APIs Plan to remove in EE 11 M2. -->
+        <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
+        <jakarta.xml.ws-api.version>4.0.1</jakarta.xml.ws-api.version>
+        <jakarta.xml.soap-api.version>3.0.1</jakarta.xml.soap-api.version>
+
+        <!-- Other dependencies -->
+        <copyright-plugin.version>1.50</copyright-plugin.version>
+
+        <!-- Compile-time dependencies -->
+        <mojarra.version>4.1.0-M1</mojarra.version>
+        
+        <!-- Java compiler release (replaces source and target)-->
+        <maven.compiler.release>21</maven.compiler.release>
+    </properties>
+
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <archive>
+                        <manifest>
+                            <addClasspath>false</addClasspath>
+                            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-javadoc-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/sources-dependency</directory>
+                                    <includes>
+                                        <include>**/*.jpg</include>
+                                        <include>**/*.gif</include>
+                                        <include>**/*.pdf</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/site/apidocs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <!--
+                            <excludes>
+                                <exclude>
+                                  module-info.java
+                                </exclude>
+                            </excludes>
+                            -->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>${parent.deploy.skip}</skip>
+                </configuration>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.4.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <attach>true</attach>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.glassfish.build</groupId>
+                    <artifactId>glassfishbuild-maven-plugin</artifactId>
+                    <version>3.2.28</version>
+                    <executions>
+                        <execution>
+                            <id>unpack-sources</id>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <attachSources>false</attachSources>
+                                <excludeArtifactIds>tools-jar,servlet-api,jakarta.faces</excludeArtifactIds>
+                                <excludes>${extra.excludes}</excludes>
+                                <includes>jakarta/**, resources/**</includes>
+                                <excludeTransitive>true</excludeTransitive>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-pom</id>
+                            <phase>package</phase>
+                            <configuration>
+                                <parent>
+                                    <groupId>org.eclipse.ee4j</groupId>
+                                    <artifactId>project</artifactId>
+                                    <version>1.0.9</version>
+                                </parent>
+                                <groupId>jakarta.platform</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${jakartaee.version}</version>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>attach-all-artifacts</id>
+                            <phase>verify</phase>
+                            <configuration>
+                                <pomFile>${project.build.directory}/pom.xml</pomFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <failOnError>true</failOnError>
+                        <additionalJOptions>${javadoc.options}</additionalJOptions>
+                        <docfilessubdirs>true</docfilessubdirs>
+                        <javadocDirectory>${project.basedir}/../src/main/javadoc</javadocDirectory>
+                        <attach>true</attach>
+                        <doclint>none</doclint>
+                        <doctitle>${apidocs.doctitle}</doctitle>
+                        <windowtitle>${apidocs.windowtitle}</windowtitle>
+                        <header>${apidocs.header}</header>
+                        <bottom>${apidocs.bottom}</bottom>
+                        <sourcepath>${project.build.directory}/sources-dependency</sourcepath>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.6.0</version>
+                    <executions>
+                        <execution>
+                            <id>unpack-sources</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>unpack-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${apidocs.api.tmp}</outputDirectory>
+                                <classifier>sources</classifier>
+                                <useSubDirectoryPerArtifact>true</useSubDirectoryPerArtifact>
+                                <stripVersion>true</stripVersion>
+                                <excludeScope>provided</excludeScope>
+                                <excludes>home/**</excludes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.ant</groupId>
+                            <artifactId>ant</artifactId>
+                            <version>1.10.12</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>prepare-sources</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <mkdir dir="${apidocs.api.src}"/>
+                                    <copy todir="${apidocs.api.src}" >
+                                        <fileset dir="${apidocs.api.tmp}">
+                                            <include name="*-api-sources-jar/**"/>
+                                            <exclude name="jakarta.enterprise.cdi-api-sources-jar/**"/>
+                                            <!-- web-profile -->
+                                            <exclude name="jakarta.authentication-api-sources-jar/**"/>
+                                            <exclude name="jakarta.enterprise.concurrent-api-sources-jar/**"/>
+                                            <exclude name="jakarta.security.enterprise-api-sources-jar/**"/>
+                                            <exclude name="jakarta.websocket-client-api-sources-jar/**"/>
+                                            <exclude name="jakarta.faces-api-sources-jar/**"/>
+
+                                            <!-- full -->
+                                            <exclude name="jakarta.authorization-api-sources-jar/**"/>
+                                            <exclude name="jakarta.jms-api-sources-jar/**"/>
+                                        </fileset>
+                                        <mapper type="regexp" from="^(.*)-api-sources-jar(.*)$$" to="\1\2"/>
+                                    </copy>
+
+                                    <copy todir="${apidocs.api.src}/jakarta.cdi" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.enterprise.cdi-api-sources-jar">
+                                            <include name="**/*"/>
+                                            <exclude name="**/home**"/>
+                                        </fileset>
+                                    </copy>
+                                    <copy todir="${apidocs.api.src}/jakarta.cdi.lang.model" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.enterprise.lang-model-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>prepare-sources-web</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <copy todir="${apidocs.api.src}/jakarta.security.auth.message" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.authentication-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                    <copy todir="${apidocs.api.src}/jakarta.concurrency" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.enterprise.concurrent-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                    <copy todir="${apidocs.api.src}/jakarta.security" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.security.enterprise-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                    <copy todir="${apidocs.api.src}/jakarta.websocket.client" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.websocket-client-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                    <!-- Workaround for https://github.com/jakartaee/data/issues/361 -->
+                                    <move file="${apidocs.api.src}/jakarta-data" tofile="${apidocs.api.src}/jakarta.data"/>
+                                    <move file="${apidocs.api.src}/jakarta.enterprise.cdi-el" tofile="${apidocs.api.src}/jakarta.cdi.el"/>
+
+                                    <copy todir="${apidocs.api.src}/jakarta.faces" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.faces-api-sources-jar">
+                                            <include name="**/*" />
+                                        </fileset>
+                                    </copy>
+
+                                    <echo file="${apidocs.api.src}/jakarta.faces/module-info.java">
+module jakarta.faces {
+    exports jakarta.faces;
+    exports jakarta.faces.annotation;
+    exports jakarta.faces.application;
+    exports jakarta.faces.component;
+    exports jakarta.faces.component.behavior;
+    exports jakarta.faces.component.html;
+    exports jakarta.faces.component.search;
+    exports jakarta.faces.component.visit;
+    exports jakarta.faces.context;
+    exports jakarta.faces.convert;
+    exports jakarta.faces.el;
+    exports jakarta.faces.event;
+    exports jakarta.faces.flow;
+    exports jakarta.faces.flow.builder;
+    exports jakarta.faces.lifecycle;
+    exports jakarta.faces.model;
+    exports jakarta.faces.push;
+    exports jakarta.faces.render;
+    exports jakarta.faces.validator;
+    exports jakarta.faces.view;
+    exports jakarta.faces.view.facelets;
+    exports jakarta.faces.webapp;
+
+    requires java.logging;
+    requires jakarta.el;
+    requires jakarta.cdi;
+    requires jakarta.cdi.el;
+    requires jakarta.servlet;
+    requires jakarta.validation;
+    requires jakarta.websocket;
+    requires jakarta.websocket.client;
+    requires java.desktop;
+    requires java.sql;
+    requires java.naming;
+    requires jakarta.inject;
+    requires jakarta.persistence;
+    requires jakarta.ejb;
+    requires jakarta.json;
+    requires jakarta.xml.ws;
+}
+                                    </echo>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>prepare-sources-platform</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <copy todir="${apidocs.api.src}/jakarta.security.jacc" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.authorization-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                    <copy todir="${apidocs.api.src}/jakarta.messaging" >
+                                        <fileset dir="${apidocs.api.tmp}/jakarta.jms-api-sources-jar">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <!-- workaround for error: package jakarta.xml.ws.wsaddressing has already been annotated @jakarta.xml.bind.annotation.XmlSchema(namespace=W3CEndpointReference.NS, -->
+                            <id>rewrite-problematic-sources</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <echo file="${project.build.directory}/sources-dependency/jakarta/xml/ws/wsaddressing/package-info.java"
+                                          message="package jakarta.xml.ws.wsaddressing;${line.separator}"
+                                          append="false" />
+                                </target>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>build-javadocs</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <mkdir dir="${apidocs.api.dist}"/>
+                                    <javadoc destdir="${apidocs.api.dist}"
+                                             modulesourcepath="${apidocs.api.src}"
+                                             modulepath="${apidocs.modulepath}"
+                                             author="false"
+                                             docfilessubdirs="true"
+                                             failonerror="true"
+                                             serialwarn="true"
+                                             source="${maven.compiler.release}"
+                                             splitindex="true"
+                                             use="true"
+                                             windowtitle="${apidocs.windowtitle}"
+                                    >
+                                        <arg value="-J-Xmx256m"/>
+                                        <arg value="-Xdoclint:none"/>
+                                        <arg value="-notimestamp"/>
+                                        <arg value="-quiet"/>
+                                        <doctitle>${apidocs.doctitle}</doctitle>
+                                        <bottom>${apidocs.bottom}</bottom>
+                                        <header>${apidocs.header}</header>
+                                        <group title="Required Modules" packages="${apidocs.required}"/>
+                                        <group title="Optional Modules" packages="${apidocs.optional}"/>
+                                        <fileset dir="${apidocs.api.src}">
+                                            <include name="**/*.java"/>
+                                        </fileset>
+                                    </javadoc>
+                                    <copy todir="${apidocs.api.dist}" >
+                                        <fileset dir="${project.basedir}/../src/main/javadoc">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <targetPath>META-INF/</targetPath>
+                <filtering>false</filtering>
+                <directory>${project.basedir}/..</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <!--
+            A profile to report serialVersionUID errors when compiling
+            the API source files.
+        -->
+        <profile>
+            <id>check-serial-version-uid</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <useIncrementalCompilation>false</useIncrementalCompilation>
+                            <showWarnings>true</showWarnings>
+                            <compilerArgs>
+                                <arg>-Xlint:serial</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
